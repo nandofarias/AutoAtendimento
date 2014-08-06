@@ -1,16 +1,36 @@
 package br.com.fiap.trabalho;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
+/**
+ * Classe responsavel pelo funcionamento do sistema
+ *
+ */
 public class Main {
-	
-	
-public static double recebeValor()  {
-		
+	/**
+	 * Este metodo tenta realizar a conversao de uma String em Double, para verificar se o valor é um numero valido
+	 * @param valor String - Valor em String
+	 * @return boolean - True se a string possuir valor double, False se for apenas caracteres
+	 */
+	public static boolean isDouble(String valor){
+		try {
+			Double.parseDouble(valor);
+			return true;
+		} catch (NumberFormatException e) {
+			System.out.println("Valor digitado não é um numero valido");
+			return false;
+		}
+	}
+	/**
+	 * Metodo responsavel por receber um valor de saque ou deposito e validar esse valor
+	 * @return Double - retorna o valor ja formatado como double
+	 */
+	public static double recebeValor() {
+
 		InputStream is = System.in;
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader stdin = new BufferedReader(isr);
@@ -19,99 +39,108 @@ public static double recebeValor()  {
 		try {
 			valor = stdin.readLine();
 		} catch (IOException e1) {
-			System.out.println("Erro ao efetuar a leitura do valor. Tente novamente");
+			System.out
+					.println("Erro ao efetuar a leitura do valor. Tente novamente");
 			recebeValor();
 		}
-		
-		//Substitue a virgula pelo ponto
-		valor =valor.replace(",", ".");
-		
-		//verifica se ??? um valor do tipo double
-		try {
-		   Double.parseDouble(valor);
-		} catch (NumberFormatException e) {
-			System.out.println("Valor digitado e invalido, por favor digite um valor valido e tente novamente");
-		}
-		
-		//Verifica se o valor nao O
-		if(Double.parseDouble(valor) == 0){
+
+		// Substitue a virgula pelo ponto
+		valor = valor.replace(",", ".");
+
+		// verifica se ??? um valor do tipo double
+		if(!isDouble(valor)) return recebeValor();
+
+
+		// Verifica se o valor nao O
+		if (Double.parseDouble(valor) == 0) {
 			System.out.println("O valor digitado nao pode ser 0");
 			return recebeValor();
 		}
-		//verifica se o numero de casas apos o ponto e menor que 2
-		String [] valorSplit = valor.split("\\.");
-		if(valorSplit.length>1){
-			if(valor.split("\\.")[1].length()>2){
-				System.out.println("O valor digitado nao pode ultrapassar 2 casas decimais apos a virgula");
+		// verifica se o numero de casas apos o ponto e menor que 2
+		String[] valorSplit = valor.split("\\.");
+		if (valorSplit.length > 1) {
+			if (valor.split("\\.")[1].length() > 2) {
+				System.out
+						.println("O valor digitado nao pode ultrapassar 2 casas decimais apos a virgula");
 				return recebeValor();
-			}
-			else{
+			} else {
 				return Double.parseDouble(valor);
 			}
-		}
-		else{
+		} else {
 			return Double.parseDouble(valor);
 		}
-		
-	}
-	
-	public static void menu(Correntista correntista) {
-		System.out.println("--------------------------------------------------------------------------------------------------------");
 
-		try{
-			
-		InputStream is = System.in;
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader stdin = new BufferedReader(isr);
-		OperacoesBancarias ob = new OperacoesBancarias(correntista);
-		System.out.println("Para selecionar uma operacao, digite o numero correspondente e aperte <Enter>:");
-		System.out.println("(1)Saque\n"+
-						   "(2)Deposito\n"+
-						   "(3)Consultar Saldo\n"+
-						   "(4)Consultar Extrato\n"+
-						   "(0)Sair");
-		System.out.print("Opcao: ");
-		String opcao = stdin.readLine();
-		switch(opcao){
-		case("0"):System.out.println("Agradecemos sua preferencia.");
-					break;
-		case("1"): {
-			double valor = recebeValor();
-			ob.saque(valor);
+	}
+/**
+ * Metodo responsavel pelo fluxo principal do sistema, chamado de menu
+ * @param correntista Correntista - Nao pode ser null
+ */
+	public static void menu(Correntista correntista) {
+		System.out
+				.println("--------------------------------------------------------------------------------------------------------");
+
+		try {
+
+			InputStream is = System.in;
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader stdin = new BufferedReader(isr);
+			OperacoesBancarias ob = new OperacoesBancarias(correntista);
+			System.out
+					.println("Para selecionar uma operacao, digite o numero correspondente e aperte <Enter>:");
+			System.out.println("(1)Saque\n" + "(2)Deposito\n"
+					+ "(3)Consultar Saldo\n" + "(4)Consultar Extrato\n"
+					+ "(0)Sair");
+			System.out.print("Opcao: ");
+			String opcao = stdin.readLine();
+			switch (opcao) {
+			case ("0"):
+				System.out.println("Agradecemos sua preferencia.");
+				break;
+			case ("1"): {
+				double valor = recebeValor();
+				ob.saque(valor);
+				menu(correntista);
+				break;
+			}
+			case ("2"): {
+				double valor = recebeValor();
+				ob.deposito(valor);
+				menu(correntista);
+				break;
+			}
+			case ("3"):
+				ob.consultaSaldo();
+				menu(correntista);
+				break;
+			case ("4"):
+				ob.consultaExtrato();
+				menu(correntista);
+				break;
+			default:
+				System.out.println("Operacao invalida");
+				menu(correntista);
+			}
+
+		} catch (NumberFormatException ne) {
+			System.out
+					.println("O valor escolhido para saque/deposito e invalido");
 			menu(correntista);
-			break;
-		}
-		case("2"):{
-			double valor = recebeValor();
-			ob.deposito(valor);
-			menu(correntista);
-			break;
-		}
-		case("3"): ob.consultaSaldo();
-					menu(correntista);
-					break;
-		case("4"): ob.consultaExtrato();
-					menu(correntista);
-					break;
-		default: System.out.println("Operacao invalida");
-					menu(correntista);
-		}
-		
-		}catch(NumberFormatException ne){
-			System.out.println("O valor escolhido para saque/deposito e invalido");
-			menu(correntista);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 
-		
 	}
-	public static void main(String[] args){
+/**
+ * Metodo de inicializacao do sistema
+ * A partir dele é criado ou carregado um correntista para continuar o fluxo do sistema
+ * @param args
+ */
+	public static void main(String[] args) {
 		InputStream is = System.in;
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader stdin = new BufferedReader(isr);
-		System.out.println("--------------------------------------------------------------------------------------------------------");
+		System.out
+				.println("--------------------------------------------------------------------------------------------------------");
 		try {
 			Correntista correntista;
 			CorrentistaDao dao = new CorrentistaDao();
@@ -124,16 +153,15 @@ public static double recebeValor()  {
 			} else {
 				correntista = dao.cadastrarNovoCliente(cpf);
 			}
-			if(correntista == null){
+			if (correntista == null) {
 				System.out.println("Por favor tente novamente mais tarde");
-			}
-			else{
+			} else {
 				menu(correntista);
 			}
-			
 
 		} catch (IOException e) {
-			System.out.println("Desculpe o inconveniente, ocorreu um erro no leitor, por favor contate o desenvolvedor");
+			System.out
+					.println("Desculpe o inconveniente, ocorreu um erro no leitor, por favor contate o desenvolvedor");
 		}
 
 	}

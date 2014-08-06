@@ -7,9 +7,18 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+/**
+ * Esta classe por manipular o extrato do correntista nos arquivos de texto 
+ *
+ */
 
 public class ExtratoDao {
-	public void salvar(String cpf, String texto) throws Exception{
+	/**
+	 * Metodo responsavel por salvar uma transacao no arquivo de extrato 
+	 * @param cpf String - Sem pontuacao
+	 * @param texto String - Informa a natureza da transacao juntamente com o valor
+	 */
+	public void salvar(String cpf, String texto){
 		try{
 			GregorianCalendar gc = new GregorianCalendar();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -21,13 +30,17 @@ public class ExtratoDao {
 		FileWriter fw = new FileWriter(cpf + "Extrato", true);
 		PrintWriter out = new PrintWriter(fw);
 		out.println();
-		out.print(texto+"as "+hora+" do dia "+data);
+		out.print(texto+" as "+hora+" do dia "+data);
 		out.close();
 		fw.close();
 		}catch(IOException e){
-			throw new Exception("N??o foi possivel realizar esta opera????o");
+			System.out.println("Nao foi possivel realizar esta operacao");
 		}
 	}
+	/**
+	 * Metodo responsavel por recuperar o extrato a partir do arquivo
+	 * @param cpf String - Sem pontuacao
+	 */
 	public void getExtrato(String cpf) throws Exception{
 		try{
 		FileReader fr = new FileReader(cpf+"Extrato");
@@ -38,7 +51,7 @@ public class ExtratoDao {
 		br.close();
 		fr.close();
 		}catch(IOException e){
-			throw new Exception("Erro ao consultar extrato do usuario");
+			System.out.println("Erro ao consultar extrato do usuario");
 		}
 	}
 

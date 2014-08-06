@@ -1,12 +1,23 @@
 package br.com.fiap.trabalho;
+/**
+ * Classe responsavel por realizar as 4 operacoes principais: Saque, Deposito, Consulta Saldo e Consulta Extrato. Faz parte da camada de controle
+ *
+ */
 public class OperacoesBancarias {
 
 	private Correntista correntista;
-	
+	/**
+	 * Construtor principal e unico
+	 * @param correntista Correntista - É necessario passar a referencia a este objeto para que os metodos funcionem corretamente
+	 */
 	public OperacoesBancarias(Correntista correntista) {
 		this.correntista = correntista;
 	}
-
+	/**
+	 * Metodo responsavel por efetuar o saque
+	 * @param valor Double - Valor precisa ser maior que 0 e menor que o saldo
+	 * @throws Exception - Caso o valor não seja valido
+	 */
 	public void saque(double valor) throws Exception {
 		if (valor <= 0) {
 			throw new Exception(
@@ -28,11 +39,15 @@ public class OperacoesBancarias {
 				
 				System.out.println("Operacao realizada com sucesso!");
 			} catch (Exception e) {
-				throw new Exception("Erro ao realizar o saque, por favor contate o desenvolvedor");
+				System.out.println("Erro ao realizar o saque, por favor contate o desenvolvedor");
 			} 
 		}
 	}
-
+	/**
+	 * Metodo responsavel por efetuar o deposito
+	 * @param valor Double - Valor precisa ser maior que 0
+	 * @throws Exception - Caso o valor não seja valido
+	 */
 	public void deposito(double valor) throws Exception {
 		if (valor <= 0) {
 			throw new Exception(
@@ -51,17 +66,21 @@ public class OperacoesBancarias {
 							
 				System.out.println("Operacao realizada com sucesso!");
 			} catch (Exception e) {
-				throw new Exception("Erro ao realizar o saque, por favor contate o desenvolvedor");
+				System.out.println("Erro ao realizar o saque, por favor contate o desenvolvedor");
 			}
 		}
 
 	}
-
+	/**
+	 * Metodo que imprime o valor do saldo
+	 */
 	public void consultaSaldo() {
 		System.out.println("Voce possui o saldo no valor de R$ "+String.format("%.2f", correntista.getSaldo()));
 	}
-
-	public void consultaExtrato() throws Exception {
+	/**
+	 * Metodo responsavel por controlar a chamada do extrato
+	 */
+	public void consultaExtrato() {
 		
 		System.out.println("Aguarde enquanto processamos seu pedido...");
 		System.out.println("--------------------------------------------------------------------------------------------------------");
@@ -71,7 +90,7 @@ public class OperacoesBancarias {
 			extratoDao.getExtrato(correntista.getCpf());
 			consultaSaldo();
 		}catch(Exception e){
-			throw new Exception("Erro ao consultar extrato, por favor contate o desenvolvedor");
+			System.out.println("Erro ao consultar extrato, por favor contate o desenvolvedor");
 		}
 	}
 	
