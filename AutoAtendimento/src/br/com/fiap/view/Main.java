@@ -1,10 +1,14 @@
-package br.com.fiap.trabalho;
+package br.com.fiap.view;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import br.com.fiap.controller.OperacoesBancarias;
+import br.com.fiap.dao.CorrentistaDao;
+import br.com.fiap.model.Correntista;
 
 /**
  * Classe responsavel pelo funcionamento do sistema

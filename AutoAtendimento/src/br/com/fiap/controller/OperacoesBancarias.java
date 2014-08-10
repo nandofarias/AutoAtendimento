@@ -1,4 +1,9 @@
-package br.com.fiap.trabalho;
+package br.com.fiap.controller;
+
+import br.com.fiap.dao.CorrentistaDao;
+import br.com.fiap.dao.ExtratoDao;
+import br.com.fiap.model.Correntista;
+
 /**
  * Classe responsavel por realizar as 4 operacoes principais: Saque, Deposito, Consulta Saldo e Consulta Extrato. Faz parte da camada de controle
  *

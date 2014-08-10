@@ -1,4 +1,4 @@
-package br.com.fiap.trabalho;
+package br.com.fiap.model;
 
 /**
  * Esta classe possui os atributos basicos de um correntista, sendo eles: cpf, nome, senha, saldo.

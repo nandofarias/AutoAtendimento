@@ -1,4 +1,4 @@
-package br.com.fiap.trabalho;
+package br.com.fiap.dao;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;

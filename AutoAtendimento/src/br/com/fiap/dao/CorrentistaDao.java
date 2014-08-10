@@ -1,4 +1,4 @@
-package br.com.fiap.trabalho;
+package br.com.fiap.dao;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+
+import br.com.fiap.model.Correntista;
 
 /**
  * Classe responsavel por manipular os dados do correntista nos arquivos de
